@@ -1,4 +1,4 @@
-# pika
+# Cromo
 
 To install dependencies:
 

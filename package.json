@@ -1,7 +1,28 @@
 {
-  "name": "pika",
-  "module": "index.ts",
+  "name": "cromo",
+  "version": "0.0.1",
+  "description": "A tiny, small & simple web framework for Bun",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jhormanrus/Cromo.git"
+  },
+  "keywords": [
+    "bun",
+    "framework",
+    "web",
+    "tiny",
+    "small",
+    "simple"
+  ],
+  "author": "jhormanrus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jhormanrus/Cromo/issues"
+  },
+  "homepage": "https://github.com/jhormanrus/Cromo#readme",
   "devDependencies": {
     "bun-types": "latest"
   },
