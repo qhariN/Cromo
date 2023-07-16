@@ -1,3 +1,5 @@
+import { CromoHandler } from "./types/handler"
+
 export class Cromo {
   router = new Bun.FileSystemRouter({
     style: 'nextjs',
@@ -13,15 +15,16 @@ export class Cromo {
         const response = new Response(null, { status: 404 })
         
         const { url, method } = request
-        const { pathname } = new URL(url)
+        const parsedUrl = new URL(url)
 
-        const matchedRoute = router.match(pathname)
+        const matchedRoute = router.match(parsedUrl.pathname)
         if (!matchedRoute) return response
 
-        const handler = await import(matchedRoute.filePath)
-        if (!handler[method]) return response
+        const handlers: Record<string, CromoHandler> = await import(matchedRoute.filePath)
+        const handler = handlers[method] || handlers.default
+        if (!handler) return response
 
-        return handler[method]()
+        return handler({ request, parsedUrl, matchedRoute })
       }
     })
 
