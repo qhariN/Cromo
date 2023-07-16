@@ -1,4 +1,5 @@
-import { CromoHandler } from "./types/handler"
+import type { CromoHandler, CromoHandlerContext, Handlers } from "./types/handler"
+import { Use } from "./use/use"
 
 export class Cromo {
   router = new Bun.FileSystemRouter({
@@ -20,11 +21,17 @@ export class Cromo {
         const matchedRoute = router.match(parsedUrl.pathname)
         if (!matchedRoute) return response
 
-        const handlers: Record<string, CromoHandler> = await import(matchedRoute.filePath)
-        const handler = handlers[method] || handlers.default
+        const handlers: Handlers = await import(matchedRoute.filePath)
+        const handler = (handlers[method] || handlers.default) as CromoHandler
         if (!handler) return response
 
-        return handler({ request, parsedUrl, matchedRoute })
+        const context: CromoHandlerContext = { request, parsedUrl, matchedRoute }
+        if (handlers.middlewares) {
+          const use = new Use(handlers.middlewares)
+          return use.exec(handler, context)
+        }
+
+        return handler(context)
       }
     })
 
