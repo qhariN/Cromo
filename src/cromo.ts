@@ -1,37 +1,39 @@
-import type { CromoHandler, CromoHandlerContext, Handlers } from "./types/handler"
+import { CromoRequest } from "./request/request"
+import { CromoResponse } from "./response/response"
+import type { Handlers } from "./types/handler"
 import { Use } from "./use/use"
 
 export class Cromo {
-  router = new Bun.FileSystemRouter({
+  private router = new Bun.FileSystemRouter({
     style: 'nextjs',
     dir: './api',
     fileExtensions: ['.ts', '.js']
   })
-  
-  listen (callback: (port: number) => void) {
+
+  listen (callback: (port: number) => undefined) {
     const router = this.router
 
     Bun.serve({
-      async fetch (request) {
-        const response = new Response(null, { status: 404 })
-        
-        const { url, method } = request
+      async fetch (originalRequest) {
+        const notFound = new Response(null, { status: 404 })
+
+        const { url, method } = originalRequest
         const parsedUrl = new URL(url)
 
         const matchedRoute = router.match(parsedUrl.pathname)
-        if (!matchedRoute) return response
+        if (!matchedRoute) return notFound
 
         const handlers: Handlers = await import(matchedRoute.filePath)
-        const handler = (handlers[method] || handlers.default) as CromoHandler
-        if (!handler) return response
+        const handler = handlers[method] || handlers.default
+        if (!handler || typeof handler !== 'function') return notFound
 
-        const context: CromoHandlerContext = { request, parsedUrl, matchedRoute }
-        if (handlers.middlewares) {
-          const use = new Use(handlers.middlewares)
-          return use.exec(handler, context)
-        }
+        const use = new Use(handlers.use)
+        const body = originalRequest.body ? await originalRequest.json() : void 0
+        const request = new CromoRequest(originalRequest, parsedUrl, matchedRoute, body)
+        const response = new CromoResponse()
+        use.exec(handler, request, response)
 
-        return handler(context)
+        return response.getResponse() || notFound
       }
     })
 

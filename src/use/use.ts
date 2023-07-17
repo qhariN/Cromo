@@ -1,17 +1,19 @@
-import type { CromoHandler, CromoHandlerContext, CromoHandlerResponse, CromoMiddleware, MiddlewareHandler } from '../types/handler'
+import { CromoRequest } from '../request/request'
+import { CromoResponse } from '../response/response'
+import type { CromoHandler, CromoHandlerResponse, CromoMiddleware } from '../types/handler'
 
 export class Use {
-  constructor (public middlewareStack: CromoMiddleware[] = []) { }
+  constructor (private middlewares: CromoMiddleware[] = []) { }
 
-  exec (fn: CromoHandler, context: CromoHandlerContext): CromoHandlerResponse {
-    const chainMiddlewares = ([firstMiddleware, ...restOfMiddlewares]: CromoMiddleware[]): MiddlewareHandler | CromoHandler => {
+  exec (fn: CromoHandler, request: CromoRequest, response: CromoResponse): CromoHandlerResponse {
+    const chainMiddlewares = ([firstMiddleware, ...restOfMiddlewares]: CromoMiddleware[]): CromoHandler => {
       if (firstMiddleware) {
-        return (context: CromoHandlerContext) => {
-          return firstMiddleware(context, chainMiddlewares(restOfMiddlewares) as MiddlewareHandler)
+        return (request, response) => {
+          return firstMiddleware(request, response, chainMiddlewares(restOfMiddlewares))
         }
       }
       return fn
     }
-    return (chainMiddlewares(this.middlewareStack) as CromoHandler)(context)
+    chainMiddlewares(this.middlewares)(request, response)
   }
 }
