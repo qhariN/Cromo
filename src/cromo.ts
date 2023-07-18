@@ -1,7 +1,6 @@
-import { CromoRequest } from "./request/request"
-import { CromoResponse } from "./response/response"
-import type { Handlers } from "./types/handler"
-import { Use } from "./use/use"
+import { CromoContext } from './context/context'
+import type { Handlers } from './types/handler'
+import { Use } from './use/use'
 
 export class Cromo {
   private router = new Bun.FileSystemRouter({
@@ -14,10 +13,10 @@ export class Cromo {
     const router = this.router
 
     Bun.serve({
-      async fetch (originalRequest) {
+      async fetch (request) {
         const notFound = new Response(null, { status: 404 })
 
-        const { url, method } = originalRequest
+        const { url, method } = request
         const parsedUrl = new URL(url)
 
         const matchedRoute = router.match(parsedUrl.pathname)
@@ -28,12 +27,10 @@ export class Cromo {
         if (!handler || typeof handler !== 'function') return notFound
 
         const use = new Use(handlers.use)
-        const body = originalRequest.body ? await originalRequest.json() : void 0
-        const request = new CromoRequest(originalRequest, parsedUrl, matchedRoute, body)
-        const response = new CromoResponse()
-        use.exec(handler, request, response)
+        const body = request.body ? await request.json() : void 0
 
-        return response.getResponse() || notFound
+        const context = new CromoContext(request, parsedUrl, matchedRoute, body)
+        return use.exec(handler, context) || notFound
       }
     })
 

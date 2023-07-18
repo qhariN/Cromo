@@ -1,11 +1,10 @@
-import { CromoResponse } from '../response/response'
-import { CromoRequest } from '../request/request'
+import type { CromoContext } from '../context/context'
 
-export type CromoHandler = (request: CromoRequest, response: CromoResponse) => CromoHandlerResponse
+export type CromoHandler = (context: CromoContext) => CromoResponse
 
-export type CromoHandlerResponse = Promise<void> | void
+export type CromoResponse = Promise<Response> | Response
 
-export type CromoMiddleware = (request: CromoRequest, response: CromoResponse, next: CromoHandler) => undefined
+export type CromoMiddleware = (context: CromoContext, next: CromoHandler) => CromoResponse
 
 export type Handlers = {
   [key: string]: CromoHandler | Function[]
