@@ -2,7 +2,9 @@ import type { CromoContext } from '../context/context'
 import type { CromoHandler, CromoResponse, CromoMiddleware } from '../types/handler'
 
 export class Use {
-  constructor (private middlewares: CromoMiddleware[] = []) { }
+  constructor (
+    private middlewares: CromoMiddleware[]
+  ) { }
 
   exec (fn: CromoHandler, context: CromoContext): CromoResponse {
     const chainMiddlewares = ([firstMiddleware, ...restOfMiddlewares]: CromoMiddleware[]): CromoHandler => {

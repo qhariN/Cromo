@@ -1,16 +1,23 @@
 import { CromoContext } from './context/context'
-import type { Handlers } from './types/handler'
+import type { CromoMiddleware, Handlers } from './types/handler'
 import { Use } from './use/use'
 
 export class Cromo {
+  private middlewares: CromoMiddleware[] = []
+
   private router = new Bun.FileSystemRouter({
     style: 'nextjs',
     dir: './api',
     fileExtensions: ['.ts', '.js']
   })
 
+  setMiddleware (middlewares: CromoMiddleware[]) {
+    this.middlewares = middlewares
+  }
+
   listen (callback: (port: number) => undefined) {
     const router = this.router
+    const middlewares = this.middlewares
 
     Bun.serve({
       async fetch (request) {
@@ -26,7 +33,8 @@ export class Cromo {
         const handler = handlers[method] || handlers.default
         if (!handler || typeof handler !== 'function') return notFound
 
-        const use = new Use(handlers.use)
+        handlers.middlewares && middlewares.push(...handlers.middlewares)
+        const use = new Use(middlewares)
         const body = request.body ? await request.json() : void 0
 
         const context = new CromoContext(request, parsedUrl, matchedRoute, body)

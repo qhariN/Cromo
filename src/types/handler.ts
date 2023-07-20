@@ -8,5 +8,5 @@ export type CromoMiddleware = (context: CromoContext, next: CromoHandler) => Cro
 
 export type Handlers = {
   [key: string]: CromoHandler | Function[]
-  use: CromoMiddleware[]
+  middlewares: CromoMiddleware[]
 }
