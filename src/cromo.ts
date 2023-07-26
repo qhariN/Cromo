@@ -34,6 +34,7 @@ export class Cromo {
         if (!handler || typeof handler !== 'function') return notFound
 
         handlers.middlewares && middlewares.push(...handlers.middlewares)
+        handlers[`${method}_middlewares`] && middlewares.push(...handlers[`${method}_middlewares`])
         const use = new Use(middlewares)
         const body = request.body ? await request.json() : void 0
 

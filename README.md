@@ -5,7 +5,8 @@
 A tiny, fast & simple file-based router server for Bun 🧅
 
 [![NPM Version][npm-version-image]][npm-url]
-[![CodeFactor](https://www.codefactor.io/repository/github/lau1944/bunrest/badge/main)](https://www.codefactor.io/repository/github/jhormanrus/cromo/overview/main)
+[![npm](https://img.shields.io/npm/l/cromo.svg)](https://spdx.org/licenses/MIT)
+[![CodeFactor](https://www.codefactor.io/repository/github/jhormanrus/cromo/badge/main)](https://www.codefactor.io/repository/github/jhormanrus/cromo/overview/main)
 ![NPM Downloads][npm-downloads-image]
 
 </div>
@@ -56,17 +57,23 @@ Inside the router files, you can write HTTP method handlers:
 
 ```ts
 // api/hello/[world]/index.ts
-import type { CromoHandler } from 'cromo'
+import type { CromoContext, CromoHandler } from 'cromo'
 
+// handler for GET method
 export const GET: CromoHandler = (context) => {
   const { world } = context.params
   return Response.redirect(`https://google.com/search?q=${world}`)
+}
+
+// default handler will be called if there is no specific handler for the method
+export default (context: CromoContext): Response => {
+  return Response.json(null, 404)
 }
 ```
 
 ### Middlewares
 
-There are two ways to add middlewares:
+There are three ways to add middlewares:
 
 1. Using `setMiddleware`: Simply call `setMiddleware` to add an array of middlewares to the server.
 
@@ -92,6 +99,27 @@ export const GET: CromoHandler = ({ responseInit }) => {
 }
 
 export const middlewares: CromoMiddleware[] = [
+  ({ responseInit }, next) => {
+    responseInit.headers = {
+      'Access-Control-Allow-Origin': '*'
+    }
+    return next(context)
+  }
+]
+```
+
+3. Declaring `[METHOD]_middlewares` const: Declare an array of middlewares in the router files as `[METHOD]_middlewares` const to apply middlewares to a specific method.
+
+```ts
+// api/user/[name].ts
+import type { CromoHandler, CromoMiddleware } from 'cromo'
+
+export const POST: CromoHandler = ({ params, responseInit }) => {
+  const { name } = params
+  return Response.json({ name }, responseInit)
+}
+
+export const POST_middlewares: CromoMiddleware[] = [
   ({ responseInit }, next) => {
     responseInit.headers = {
       'Access-Control-Allow-Origin': '*'
@@ -132,5 +160,5 @@ export interface CromoContext {
 ```
 
 [npm-url]: https://www.npmjs.com/package/cromo
-[npm-version-image]: https://badgen.net/npm/v/bunrest
+[npm-version-image]: https://badgen.net/npm/v/cromo
 [npm-downloads-image]: https://badgen.net/npm/dm/cromo
