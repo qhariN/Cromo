@@ -1,5 +1,7 @@
 name: publish
 
+on: push
+
 jobs:
   publish:
     name: 🚀 Publish

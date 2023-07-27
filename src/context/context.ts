@@ -10,11 +10,11 @@ export class CromoContext {
     public body: unknown
   ) { }
 
-  get params (): any {
+  get params (): Record<string, string> {
     return this.matchedRoute.params
   }
 
-  get query (): any {
+  get query (): Record<string, string> {
     return Object.fromEntries(this.url.searchParams)
   }
 }
