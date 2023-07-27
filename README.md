@@ -4,10 +4,11 @@
 
 A tiny, fast & simple file-based router server for Bun 🧅
 
-[![NPM Version][npm-version-image]][npm-url]
+[![NPM version][npm-version-image]][npm-url]
+![NPM Downloads][npm-downloads-image]
 [![npm](https://img.shields.io/npm/l/cromo.svg)](https://spdx.org/licenses/MIT)
 [![CodeFactor](https://www.codefactor.io/repository/github/jhormanrus/cromo/badge/main)](https://www.codefactor.io/repository/github/jhormanrus/cromo/overview/main)
-![NPM Downloads][npm-downloads-image]
+[![Build status][build-image]][build-url]
 
 </div>
 
@@ -152,13 +153,15 @@ export interface CromoContext {
   url: URL
   matchedRoute: MatchedRoute
   body: unknown
-  params: any
-  query: any
+  params: Record<string, string>
+  query: Record<string, string>
   // response objects
   responseInit: ResponseInit
 }
 ```
 
 [npm-url]: https://www.npmjs.com/package/cromo
-[npm-version-image]: https://badgen.net/npm/v/cromo
+[npm-version-image]: https://img.shields.io/npm/v/cromo
 [npm-downloads-image]: https://badgen.net/npm/dm/cromo
+[build-image]: https://github.com/jhormanrus/cromo/actions/workflows/publish.yml/badge.svg
+[build-url]: https://github.com/jhormanrus/cromo/actions/workflows/publish.yml

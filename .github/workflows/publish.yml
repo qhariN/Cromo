@@ -1,0 +1,16 @@
+name: publish
+
+jobs:
+  publish:
+    name: 🚀 Publish
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: 👍 Checkout
+        uses: actions/checkout@v3
+
+      - name: 🚀 Publish to npm
+        uses: JS-DevTools/npm-publish@v2
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
