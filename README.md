@@ -5,6 +5,7 @@
 A tiny, fast & simple file-based router server for Bun 🧅
 
 [![NPM version][npm-version-image]][npm-url]
+[![install size](https://packagephobia.com/badge?p=cromo)](https://packagephobia.com/result?p=cromo)
 ![NPM Downloads][npm-downloads-image]
 [![npm](https://img.shields.io/npm/l/cromo.svg)](https://spdx.org/licenses/MIT)
 [![CodeFactor](https://www.codefactor.io/repository/github/jhormanrus/cromo/badge/main)](https://www.codefactor.io/repository/github/jhormanrus/cromo/overview/main)
@@ -66,7 +67,7 @@ export const GET: CromoHandler = (context) => {
   return Response.redirect(`https://google.com/search?q=${world}`)
 }
 
-// default handler will be called if there is no specific handler for the method
+// default handler is called if there is no specific handler for the method
 export default (context: CromoContext): Response => {
   return Response.json(null, 404)
 }

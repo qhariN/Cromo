@@ -6,6 +6,8 @@ export type CromoResponse = Promise<Response> | Response
 
 export type CromoMiddleware = (context: CromoContext, next: CromoHandler) => CromoResponse
 
+export type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS'
+
 export type Handlers = {
   default?: CromoHandler
   GET?: CromoHandler
@@ -21,5 +23,4 @@ export type Handlers = {
   PATCH_middlewares: CromoMiddleware[]
   DELETE_middlewares: CromoMiddleware[]
   OPTIONS_middlewares: CromoMiddleware[]
-  [key: string]: any
 }
