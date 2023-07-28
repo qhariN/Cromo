@@ -1,15 +1,19 @@
 import { CromoContext } from './context/context'
 import type { CromoMiddleware, Handlers, Method } from './types/handler'
 import { Use } from './use/use'
+import type { FileSystemRouter } from 'bun'
 
 export class Cromo {
   private middlewares: CromoMiddleware[] = []
+  private router: FileSystemRouter
 
-  private router = new Bun.FileSystemRouter({
-    style: 'nextjs',
-    dir: './api',
-    fileExtensions: ['.ts', '.js']
-  })
+  constructor (public options: { dir?: string, port?: number }) {
+    this.router = new Bun.FileSystemRouter({
+      style: 'nextjs',
+      dir: options.dir || './api',
+      fileExtensions: ['.ts', '.js']
+    })
+  }
 
   setMiddleware (middlewares: CromoMiddleware[]) {
     this.middlewares = middlewares
@@ -18,6 +22,7 @@ export class Cromo {
   listen (callback: (port: number) => undefined) {
     const router = this.router
     const middlewares = this.middlewares
+    const port = this.options.port || Number(Bun.env.PORT) || 3000
 
     Bun.serve({
       async fetch (request) {
@@ -44,7 +49,6 @@ export class Cromo {
       }
     })
 
-    const port = Number(Bun.env.PORT) || 3000
     callback(port)
   }
 }

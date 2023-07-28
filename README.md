@@ -24,25 +24,28 @@ A tiny, fast & simple file-based router server for Bun 🧅
 
 ### Server set up
 
-To get started, download the package:
+To get started with Cromo, you need to download the package using [Bun](https://bun.sh):
 
 ```shell
 bun add cromo
 ```
 
-Then, import and initialize Cromo in your code:
+Next, import and initialize Cromo in your code:
 
 ```ts
 import { Cromo } from 'cromo'
 
-const cromo = new Cromo()
+const cromo = new Cromo({
+  dir: './src/api'  // default: './api'
+  port: 5000        // default: Bun.env.PORT || 3000
+})
 ```
 
 ### Router usage 
+Cromo utilizes a file-based router system similar to SvelteKit. By default, the router folder is named `api`, but you can change it by passing the dir option during initialization:
 
-As we are using file-based router, we need to create a folder called `api` at the root of the project, similar to the SvelteKit router:
-
-```
+``` ts
+// File structure example
 ├── api
 │   ├── hello
 │   │   ├── [world]
@@ -75,7 +78,7 @@ export default (context: CromoContext): Response => {
 
 ### Middlewares
 
-There are three ways to add middlewares:
+There are three ways to add middlewares in Cromo:
 
 1. Using `setMiddleware`: Simply call `setMiddleware` to add an array of middlewares to the server.
 
@@ -133,7 +136,9 @@ export const POST_middlewares: CromoMiddleware[] = [
 
 ### Start the server, listen to port
 
-By default, Cromo will listen to port `Bun.env.PORT`, if it is not set, it will listen to port 3000.
+By default, Cromo will listen to port `Bun.env.PORT`, and if it is not set, it will listen to port 3000. However, you can change it by passing the `port` option during initialization.
+
+Here is an example of starting the server:
 
 ```ts
 cromo.listen(port => {
