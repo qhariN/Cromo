@@ -7,10 +7,10 @@ export class Cromo {
   private middlewares: CromoMiddleware[] = []
   private router: FileSystemRouter
 
-  constructor (public options: { dir?: string, port?: number }) {
+  constructor (public options?: { dir?: string, port?: number }) {
     this.router = new Bun.FileSystemRouter({
       style: 'nextjs',
-      dir: options.dir || './api',
+      dir: options?.dir || './api',
       fileExtensions: ['.ts', '.js']
     })
   }
@@ -22,7 +22,7 @@ export class Cromo {
   listen (callback: (port: number) => undefined) {
     const router = this.router
     const middlewares = this.middlewares
-    const port = this.options.port || Number(Bun.env.PORT) || 3000
+    const port = this.options?.port || Number(Bun.env.PORT) || 3000
 
     Bun.serve({
       async fetch (request) {
