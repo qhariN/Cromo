@@ -42,7 +42,7 @@ const cromo = new Cromo({
 ```
 
 ### Router usage 
-Cromo utilizes a file-based router system similar to SvelteKit. By default, the router folder is named `api`, but you can change it by passing the dir option during initialization:
+Cromo utilizes a file-based router system. By default, the router folder is named `api`, but you can change it by passing the dir option during initialization:
 
 ``` ts
 // File structure example
