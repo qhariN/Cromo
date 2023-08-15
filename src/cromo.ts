@@ -1,11 +1,12 @@
 import { CromoContext } from './context/context'
 import type { CromoMiddleware, Handlers, Method } from './types/handler'
 import { Use } from './use/use'
-import type { FileSystemRouter } from 'bun'
+import type { FileSystemRouter, Server } from 'bun'
 
 export class Cromo {
   private middlewares: CromoMiddleware[] = []
   private router: FileSystemRouter
+  private server: Server | undefined
 
   constructor (public options?: { dir?: string, port?: number }) {
     this.router = new Bun.FileSystemRouter({
@@ -49,6 +50,10 @@ export class Cromo {
       }
     })
 
-    callback(port)
+    callback && callback(this.server.port)
+  }
+
+  stop () {
+    this.server?.stop()
   }
 }
