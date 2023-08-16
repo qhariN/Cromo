@@ -20,12 +20,12 @@ export class Cromo {
     this.middlewares = middlewares
   }
 
-  listen (callback: (port: number) => undefined) {
+  start (callback?: (port: number) => undefined) {
     const router = this.router
     const middlewares = this.middlewares
-    const port = this.options?.port || Number(Bun.env.PORT) || 3000
 
-    Bun.serve({
+    this.server = Bun.serve({
+      port: this.options?.port,
       async fetch (request) {
         const notFound = new Response(null, { status: 404 })
 
