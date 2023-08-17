@@ -8,8 +8,11 @@ export class DummyApi {
     await proc.exited
 
     Bun.write(`${this.dir}/index.ts`, `
-      import type { CromoHandler } from 'cromo'
-      export const GET: CromoHandler = () => Response.json({ message: 'Hello World!' })
+      import type { CromoHandler } from '../src'
+
+      export const GET: CromoHandler = ({ responseInit }) => {
+        return Response.json({ message: 'Hello World!' }, responseInit)
+      }
     `)
   }
 

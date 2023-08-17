@@ -6,7 +6,7 @@ describe('Cromo initialization', () => {
   let cromo: Cromo
   const dummyApi = new DummyApi()
 
-  it('initialize correctly', async () => {
+  it('initialize', async () => {
     await dummyApi.init()
 
     cromo = new Cromo()
