@@ -1,5 +1,16 @@
 export class DummyApi {
   private dir: string = './api'
+  private template: string = `
+    import type { CromoHandler } from '../src'
+
+    export const GET: CromoHandler = ({ responseInit }) => {
+      return Response.json(null, responseInit)
+    }
+
+    export default ({ responseInit }: CromoContext): Response => {
+      return Response.json(null, responseInit)
+    }
+  `
 
   async init (dir?: string) {
     dir && (this.dir = dir)
@@ -7,12 +18,34 @@ export class DummyApi {
     const proc = Bun.spawn(['mkdir', this.dir])
     await proc.exited
 
-    Bun.write(`${this.dir}/index.ts`, `
-      import type { CromoHandler } from '../src'
+    Bun.write(`${this.dir}/index.ts`, this.template)
+  }
 
-      export const GET: CromoHandler = ({ responseInit }) => {
-        return Response.json({ message: 'Hello World!' }, responseInit)
-      }
+  async initWithRouteMiddlewares () {
+    const proc = Bun.spawn(['mkdir', this.dir])
+    await proc.exited
+
+    Bun.write(`${this.dir}/index.ts`, this.template + `
+      export const middlewares: CromoMiddleware[] = [
+        (context, next) => {
+          context.responseInit = { status: 202 }
+          return next(context)
+        }
+      ]
+    `)
+  }
+
+  async initWithMethodMiddlewares () {
+    const proc = Bun.spawn(['mkdir', this.dir])
+    await proc.exited
+
+    Bun.write(`${this.dir}/index.ts`, this.template + `
+      export const GET_middlewares: CromoMiddleware[] = [
+        (context, next) => {
+          context.responseInit = { status: 202 }
+          return next(context)
+        }
+      ]
     `)
   }
 

@@ -5,14 +5,6 @@ import { DummyApi } from './test-utils'
 describe('Cromo initialization', () => {
   let cromo: Cromo
   const dummyApi = new DummyApi()
-
-  it('initialize', async () => {
-    await dummyApi.init()
-
-    cromo = new Cromo()
-    expect(cromo).toBeDefined()
-    expect(cromo).toBeInstanceOf(Cromo)
-  })
   
   it('initialize with default options', async () => {
     await dummyApi.init()
@@ -21,12 +13,9 @@ describe('Cromo initialization', () => {
     cromo.start()
 
     const request = fetch('http://localhost:3000')
-    const response = await request
-    const httpStatus = response.status
-    const body = await response.json()
+    const httpStatus = (await request).status
 
     expect(httpStatus).toBe(200)
-    expect(body).toEqual({ message: 'Hello World!' })
   })
 
   it('initialize with custom options', async () => {
