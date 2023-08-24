@@ -1,6 +1,6 @@
 import { CromoContext } from './context/context'
 import type { CromoMiddleware, Handlers, Method } from './types/handler'
-import { Use } from './use/use'
+import { Runner } from './runner/runner'
 import type { FileSystemRouter, Server } from 'bun'
 
 export class Cromo {
@@ -29,11 +29,10 @@ export class Cromo {
       async fetch (request) {
         const notFound = new Response(null, { status: 404 })
 
-        const { url } = request
         const method = request.method.toUpperCase() as Method
-        const parsedUrl = new URL(url)
+        const pathname = new URL(request.url).pathname
 
-        const matchedRoute = router.match(parsedUrl.pathname)
+        const matchedRoute = router.match(pathname)
         if (!matchedRoute) return notFound
 
         const handlers: Handlers = await import(matchedRoute.filePath)
@@ -42,11 +41,10 @@ export class Cromo {
 
         handlers.middlewares && middlewares.push(...handlers.middlewares)
         handlers[`${method}_middlewares`] && middlewares.push(...handlers[`${method}_middlewares`])
-        const use = new Use(middlewares)
-        const body = request.body ? await request.json() : void 0
 
-        const context = new CromoContext(request, parsedUrl, matchedRoute, body)
-        return use.exec(handler, context) || notFound
+        const runner = new Runner(middlewares)
+        const context = new CromoContext(request, matchedRoute)
+        return runner.exec(handler, context) || notFound
       }
     })
 

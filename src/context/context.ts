@@ -2,13 +2,18 @@ import { MatchedRoute } from 'bun'
 
 export class CromoContext {
   responseInit: ResponseInit = {}
+  body: Promise<unknown>
 
   constructor (
     public request: Request,
-    public url: URL,
-    public matchedRoute: MatchedRoute,
-    public body: unknown
-  ) { }
+    public matchedRoute: MatchedRoute
+  ) {
+    this.body = this.getBody()
+  }
+
+  get url (): URL {
+    return new URL(this.request.url)
+  }
 
   get params (): Record<string, string> {
     return this.matchedRoute.params
@@ -16,5 +21,9 @@ export class CromoContext {
 
   get query (): Record<string, string> {
     return Object.fromEntries(this.url.searchParams)
+  }
+
+  private async getBody (): Promise<unknown> {
+    return this.request.body ? await this.request.json() : void 0
   }
 }

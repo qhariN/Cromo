@@ -1,7 +1,7 @@
 import type { CromoContext } from '../context/context'
 import type { CromoHandler, CromoResponse, CromoMiddleware } from '../types/handler'
 
-export class Use {
+export class Runner {
   constructor (
     private middlewares: CromoMiddleware[]
   ) { }
