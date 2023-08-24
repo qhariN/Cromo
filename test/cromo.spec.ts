@@ -1,14 +1,10 @@
 import { Cromo } from '../src'
 import { afterEach, describe, expect, it } from 'bun:test'
-import { DummyApi } from './test-utils'
 
 describe('Cromo initialization', () => {
   let cromo: Cromo
-  const dummyApi = new DummyApi()
-  
-  it('initialize with default options', async () => {
-    await dummyApi.init()
 
+  it('initialize with default options', async () => {
     cromo = new Cromo()
     cromo.start()
 
@@ -20,9 +16,7 @@ describe('Cromo initialization', () => {
 
   it('initialize with custom options', async () => {
     const port = 5000
-    const dir = './example'
-
-    await dummyApi.init(dir)
+    const dir = './api/simple-handler'
 
     cromo = new Cromo({ port, dir })
     cromo.start()
@@ -35,6 +29,5 @@ describe('Cromo initialization', () => {
 
   afterEach(() => {
     cromo.stop()
-    dummyApi.clean()
   })
 })
