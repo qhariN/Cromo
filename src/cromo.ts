@@ -51,7 +51,7 @@ export class Cromo {
     callback && callback(this.server.port)
   }
 
-  stop () {
-    this.server?.stop()
+  stop (closeActiveConnections?: boolean) {
+    this.server?.stop(closeActiveConnections)
   }
 }

@@ -28,6 +28,6 @@ describe('Cromo', () => {
   })
 
   afterEach(() => {
-    cromo.stop()
+    cromo.stop(true)
   })
 })

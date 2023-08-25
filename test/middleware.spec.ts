@@ -54,6 +54,6 @@ describe('Middleware', () => {
   })
 
   afterEach(() => {
-    cromo.stop()
+    cromo.stop(true)
   })
 })
