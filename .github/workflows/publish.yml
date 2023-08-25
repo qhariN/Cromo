@@ -20,7 +20,7 @@ jobs:
         run: bun install
 
       - name: 🧪 Unit Tests
-        run: bun test
+        run: bun test --coverage
 
   publish:
     name: 🚀 Publish
