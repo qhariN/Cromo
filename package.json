@@ -1,6 +1,6 @@
 {
   "name": "cromo",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "A tiny, small & simple web framework for Bun",
   "main": "src/index.ts",
   "module": "src/index.ts",

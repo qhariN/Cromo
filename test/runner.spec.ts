@@ -3,11 +3,11 @@ import { Runner } from '../src/runner/runner'
 import { CromoHandler } from '../src'
 import { CromoContext } from '../src/context/context'
 
-describe('Use', () => {
+describe('Runner', () => {
   it('initialize', () => {
-    const use = new Runner([])
+    const runner = new Runner([])
 
-    expect(use).toBeInstanceOf(Runner)
+    expect(runner).toBeInstanceOf(Runner)
   })
 
   it('execute middleware', () => {
