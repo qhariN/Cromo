@@ -19,7 +19,7 @@ A tiny, fast & simple file-based router server for Bun 🧅
 - [Router](#router-usage)
 - [Handlers](#handlers-usage)
 - [Middlewares](#middlewares)
-- [Start server](#start-the-server-listen-to-port)
+- [Start server](#start-the-server)
 - [Context object](#context-object)
 
 ### Server set up
@@ -134,14 +134,14 @@ export const POST_middlewares: CromoMiddleware[] = [
 ]
 ```
 
-### Start the server, listen to port
+### Start the server
 
 By default, Cromo will listen to port `Bun.env.PORT`, and if it is not set, it will listen to port 3000. However, you can change it by passing the `port` option during initialization.
 
 Here is an example of starting the server:
 
 ```ts
-cromo.listen(port => {
+cromo.start(port => {
   console.log(`Listening on port ${port}`)
 })
 ```
