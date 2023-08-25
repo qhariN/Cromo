@@ -1,7 +1,7 @@
 import { Cromo } from '../src'
 import { afterEach, describe, expect, it } from 'bun:test'
 
-describe('Cromo initialization', () => {
+describe('Cromo', () => {
   let cromo: Cromo
 
   it('initialize with default options', async () => {

@@ -1,7 +1,7 @@
 import { Cromo } from '../src'
-import { afterEach, describe, expect, it } from 'bun:test'
+import { afterEach, beforeEach, describe, expect, it } from 'bun:test'
 
-describe('Cromo middleware', () => {
+describe('Middleware', () => {
   let cromo: Cromo
   const url = 'http://localhost:3000'
   const status = 202
@@ -33,10 +33,12 @@ describe('Cromo middleware', () => {
   })
 
   describe('use method middleware', () => {
-    it('handle only specified method', async () => {
+    beforeEach(() => {
       cromo = new Cromo()
       cromo.start()
-  
+    })
+
+    it('handle only specified method', async () => {
       const request = fetch(`${url}/method-middleware`)
       const httpStatus = (await request).status
   
@@ -44,9 +46,6 @@ describe('Cromo middleware', () => {
     })
 
     it('does not handle other methods', async () => {
-      cromo = new Cromo()
-      cromo.start()
-  
       const request = fetch(`${url}/method-middleware`, { method: 'POST' })
       const httpStatus = (await request).status
   
