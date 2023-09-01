@@ -39,8 +39,10 @@ export class Cromo {
         const handler = handlers[method] || handlers.default
         if (!handler || typeof handler !== 'function') return notFound
 
-        handlers.middlewares && middlewares.push(...handlers.middlewares)
-        handlers[`${method}_middlewares`] && middlewares.push(...handlers[`${method}_middlewares`])
+        if (handlers.middlewares)
+          middlewares.push(...handlers.middlewares)
+        if (handlers[`${method}_middlewares`])
+          middlewares.push(...handlers[`${method}_middlewares`])
 
         const runner = new Runner(middlewares)
         const context = new CromoContext(request, matchedRoute)

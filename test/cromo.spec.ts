@@ -27,6 +27,16 @@ describe('Cromo', () => {
     expect(httpStatus).toBe(200)
   })
 
+  it('run only valid handler', async () => {
+    cromo = new Cromo()
+    cromo.start()
+
+    const request = fetch('http://localhost:3000/invalid-handler')
+    const httpStatus = (await request).status
+
+    expect(httpStatus).toBe(404)
+  })
+
   afterEach(() => {
     cromo.stop(true)
   })
