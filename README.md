@@ -2,7 +2,7 @@
 
 # 🎴 Cromo
 
-A tiny, fast & simple file-based router server for Bun 🧅
+A tiny, fast & simple file-based router server for Bun 🧄
 
 [![NPM version][npm-version-image]][npm-url]
 [![install size](https://packagephobia.com/badge?p=cromo)](https://packagephobia.com/result?p=cromo)
