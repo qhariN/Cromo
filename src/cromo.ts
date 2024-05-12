@@ -8,7 +8,7 @@ export class Cromo {
   private router: FileSystemRouter
   private server: Server | undefined
 
-  constructor (public options?: { dir?: string, port?: number }) {
+  constructor (public options?: { dir?: string, hostname?: string , port?: number }) {
     this.router = new Bun.FileSystemRouter({
       style: 'nextjs',
       dir: options?.dir || './api',
@@ -25,6 +25,7 @@ export class Cromo {
     const middlewares = this.middlewares
 
     this.server = Bun.serve({
+      hostname: this.options?.hostname,
       port: this.options?.port,
       async fetch (request) {
         const notFound = new Response(null, { status: 404 })
