@@ -20,7 +20,7 @@ export class Cromo {
     this.middlewares = middlewares
   }
 
-  start (callback?: (port: number) => undefined) {
+  start (callback?: (server: Server) => undefined) {
     const router = this.router
     const middlewares = this.middlewares
 
@@ -51,7 +51,7 @@ export class Cromo {
       }
     })
 
-    callback && callback(this.server.port)
+    callback && callback(this.server)
   }
 
   stop (closeActiveConnections?: boolean) {
