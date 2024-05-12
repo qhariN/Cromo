@@ -8,7 +8,6 @@ A tiny, fast & simple file-based router server for Bun 🧄
 [![install size](https://packagephobia.com/badge?p=cromo)](https://packagephobia.com/result?p=cromo)
 ![NPM Downloads][npm-downloads-image]
 [![npm](https://img.shields.io/npm/l/cromo.svg)](https://spdx.org/licenses/MIT)
-[![CodeFactor](https://www.codefactor.io/repository/github/jhormanrus/cromo/badge/main)](https://www.codefactor.io/repository/github/jhormanrus/cromo/overview/main)
 [![Build status][build-image]][build-url]
 
 </div>
