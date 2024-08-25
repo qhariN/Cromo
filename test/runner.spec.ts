@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it } from 'bun:test'
+import { describe, expect, it } from 'bun:test'
 import { Runner } from '../src/runner/runner'
-import { CromoHandler } from '../src'
+import type { CromoHandler } from '../src'
 import { CromoContext } from '../src/context/context'
 
 describe('Runner', () => {

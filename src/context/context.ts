@@ -1,4 +1,4 @@
-import { MatchedRoute } from 'bun'
+import type { MatchedRoute } from 'bun'
 
 export class CromoContext {
   responseInit: ResponseInit = {}
