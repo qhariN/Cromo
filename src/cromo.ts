@@ -27,7 +27,7 @@ export class Cromo {
     this.server = Bun.serve({
       hostname: this.options?.hostname,
       port: this.options?.port,
-      async fetch (request) {
+      async fetch (request, server) {
         const notFound = new Response(null, { status: 404 })
 
         const method = request.method.toUpperCase() as Method
@@ -46,7 +46,7 @@ export class Cromo {
           middlewares.push(...handlers[`${method}_middlewares`])
 
         const runner = new Runner(middlewares)
-        const context = new CromoContext(request, matchedRoute)
+        const context = new CromoContext(request, matchedRoute, server)
         return runner.exec(handler, context) || notFound
       }
     })

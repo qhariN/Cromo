@@ -16,7 +16,11 @@ describe('Context', () => {
       fileExtensions: ['.ts']
     })
     const matchedRoute = router.match(`/${param}`)!
-    const context = new CromoContext(request, matchedRoute)
+
+    const server = Bun.serve({ fetch: () => new Response() })
+    server.stop()
+
+    const context = new CromoContext(request, matchedRoute, server)
 
     expect(context.params).toEqual({ param })
     expect(context.query).toEqual({ query })

@@ -4,14 +4,17 @@ import type { CromoHandler } from '../src'
 import { CromoContext } from '../src/context/context'
 
 describe('Runner', () => {
+  const request = new Request(`http://localhost:3000`)
   const router = new Bun.FileSystemRouter({
     style: 'nextjs',
     dir: './api',
     fileExtensions: ['.ts']
   })
   const matchedRoute = router.match('/')!
-  const request = new Request(`http://localhost:3000`)
-  const context = new CromoContext(request, matchedRoute)
+  const server = Bun.serve({ fetch: () => new Response() })
+  server.stop()
+
+  const context = new CromoContext(request, matchedRoute, server)
 
   const handler: CromoHandler = (context) => Response.json(null, context.responseInit)
 

@@ -1,4 +1,4 @@
-import type { MatchedRoute } from 'bun'
+import type { MatchedRoute, Server } from 'bun'
 
 export class CromoContext {
   responseInit: ResponseInit = {}
@@ -6,7 +6,8 @@ export class CromoContext {
 
   constructor (
     public request: Request,
-    public matchedRoute: MatchedRoute
+    public matchedRoute: MatchedRoute,
+    public server: Server
   ) {
     this.body = this.getBody()
   }
